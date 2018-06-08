@@ -30,7 +30,7 @@ class MapController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return $this->displayMapAction();
+        return $this->redirectToRoute( 'map');
     }
 
     /**
