@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Tile;
 use AppBundle\Repository\TileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,4 +18,17 @@ class MapManager
     {
         return ( $this->tileRepository->findOneBy([ 'coordX' => $x, 'coordY' => $y ]) != null );
     }
+
+    /**
+     * @return Tile
+     */
+    public function getRandomIsland(): Tile
+    {
+        $islandTiles = $this->tileRepository->findBy(
+            [ 'type' => 'island' ]
+        );
+
+        return $islandTiles[array_rand($islandTiles)];
+    }
+
 }

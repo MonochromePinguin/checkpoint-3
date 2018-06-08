@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Boat;
 use AppBundle\Entity\Tile;
+use AppBundle\Service\MapManager;
 use AppBundle\Traits\BoatTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,6 +14,24 @@ use Symfony\Component\HttpFoundation\Response;
 class MapController extends Controller
 {
     use BoatTrait;
+
+    /**
+     * @Route("/start", name="start")
+     */
+    public function startAction(MapManager $mapManager)
+    {
+        $randomIsland = $mapManager->getRandomIsland();
+        $randomIsland->setHasTreasure(true);
+
+        $boat = $this->getBoat();
+        $boat->setCoordX(0);
+        $boat->setCoordY(0);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->displayMapAction();
+    }
 
     /**
      * @Route("/map", name="map")
