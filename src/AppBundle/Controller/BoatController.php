@@ -32,8 +32,7 @@ class BoatController extends Controller
         string $direction,
         MapManager $mapManager,
         SessionInterface $session
-    )
-    {
+    ) {
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
 
@@ -63,7 +62,7 @@ class BoatController extends Controller
                 );
         }
 
-        if (!$mapManager->tileExist($x,$y)) {
+        if (!$mapManager->tileExist($x, $y)) {
             $error = true;
             $session->getFlashBag()->add(
                 'warning',
