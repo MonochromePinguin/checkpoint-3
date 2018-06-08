@@ -28,9 +28,12 @@ class MapController extends Controller
 
         $boat = $this->getBoat();
 
+        $boatTile = $map[$boat->getCoordX()][$boat->getCoordY()];
+
         return $this->render('map/index.html.twig', [
             'map'  => $map ?? [],
             'boat' => $boat,
+            'tileType' => $boatTile->getType(),
             'movements' => Boat::DIRECTION_LIST
         ]);
     }
