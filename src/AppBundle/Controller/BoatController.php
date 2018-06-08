@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Boat controller.
@@ -19,8 +20,56 @@ class BoatController extends Controller
     use BoatTrait;
 
     /**
+     * @param string $direction must be one of 'N', 'E', 'S', 'W' for the 4 cardinal direction
+     *               **THIS IS BAD PRACTICE (MAGICAL STRINGS?), BUT IT IS ASKED BY THE INSTRUCTIONS.**
+     *               @TODO: USE Boat::DIRECTION_LIST INSTEAD
+     * @param SessionInterface $session
+     *
+     * @Route("/move/{direction}", name="moveDirection", requirements={"direction"="N|E|S|W"})
+     */
+    public function moveDirectionAction(string $direction, SessionInterface $session)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $boat = $this->getBoat();
+
+        $x = $boat->getCoordX();
+        $y = $boat->getCoordY();
+
+        $error = false;
+
+        switch ($direction) {
+            case 'N':
+                $y--;
+                break;
+            case 'E':
+                $x++;
+                break;
+            case 'S':
+                $y++;
+                break;
+            case 'W':
+                $x--;
+                break;
+            default:
+                $error = true;
+                $session->getFlashBag()->add(
+                    'danger',
+                    'la direction «' . $direction . ' est invalide'
+                );
+        }
+
+        if (!$error) {
+            $boat->setCoordX($x);
+            $boat->setCoordY($y);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('map');
+    }
+
+    /**
      * Move the boat to coord x,y
-     * @Route("/move/{x}/{y}", name="moveBoat", requirements={"x"="\d+", "y"="\d+"}))
+     * @Route("/move/{x}/{y}", name="moveBoat", requirements={"x"="\d+", "y"="\d+"})
      */
     public function moveBoatAction(int $x, int $y)
     {

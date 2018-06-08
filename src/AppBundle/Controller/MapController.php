@@ -31,6 +31,7 @@ class MapController extends Controller
         return $this->render('map/index.html.twig', [
             'map'  => $map ?? [],
             'boat' => $boat,
+            'movements' => Boat::DIRECTION_LIST
         ]);
     }
 }

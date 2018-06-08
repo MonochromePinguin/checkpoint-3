@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Boat
 {
+    public const DIRECTION_LIST = [
+        'N' => 'North',
+        'E' => 'East',
+        'S' => 'South',
+        'W' => 'West'
+    ];
+
     /**
      * @var int
      *

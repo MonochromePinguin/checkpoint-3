@@ -38,7 +38,17 @@
                 </div>
                 <div class="navigation">
                     <h2>Navigation</h2>
-                    {# Add here N/S/E/W buttons #}
+
+                    <ul>
+                        {%  for key, label in movements %}
+                            <li>
+                                <a href="/boat/move/{{ key }}" title="move the boat to the {{ label }}"
+                                   class="btn btn-primary">
+                                    {{ label }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
