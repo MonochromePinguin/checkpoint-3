@@ -20,6 +20,14 @@ class MapController extends Controller
      */
     public function startAction(MapManager $mapManager)
     {
+        $em = $this->getDoctrine()->getManager();
+        $tileRepository = $em->getRepository(Tile::class);
+
+        $oldTreasureIsland = $tileRepository->findOneBy(
+            ['hasTreasure' => true]
+        );
+        $oldTreasureIsland->setHasTreasure(false);
+
         $randomIsland = $mapManager->getRandomIsland();
         $randomIsland->setHasTreasure(true);
 
@@ -27,7 +35,6 @@ class MapController extends Controller
         $boat->setCoordX(0);
         $boat->setCoordY(0);
 
-        $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         return $this->redirectToRoute( 'map');
