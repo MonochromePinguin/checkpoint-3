@@ -76,6 +76,13 @@ class BoatController extends Controller
             $em->flush();
         }
 
+        if ($mapManager->checkTreasure($boat)) {
+            $session->getFlashBag()->add(
+                'success',
+                'You have found a treasure!'
+            );
+        }
+
         return $this->redirectToRoute('map');
     }
 

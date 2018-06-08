@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class MapController extends Controller
 {
@@ -37,7 +38,7 @@ class MapController extends Controller
 
         $em->flush();
 
-        return $this->redirectToRoute( 'map');
+        return $this->redirectToRoute('map');
     }
 
     /**

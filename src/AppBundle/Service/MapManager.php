@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Boat;
 use AppBundle\Entity\Tile;
 use AppBundle\Repository\TileRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,4 +32,15 @@ class MapManager
         return $islandTiles[array_rand($islandTiles)];
     }
 
+    public function checkTreasure(Boat $boat): bool
+    {
+        $boatX = $boat->getCoordX();
+        $boatY = $boat->getCoordY();
+
+        $boatTile = $this->tileRepository->findOneBy(
+            [ 'coordX' => $boatX, 'coordY' => $boatY ]
+        );
+
+        return ( ($boatTile != null) && ($boatTile->getHasTreasure() === true));
+    }
 }

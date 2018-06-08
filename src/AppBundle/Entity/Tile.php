@@ -164,7 +164,7 @@ class Tile
     /**
      * @return bool
      */
-    public function isHasTreasure(): bool
+    public function getHasTreasure(): bool
     {
         return $this->hasTreasure;
     }
