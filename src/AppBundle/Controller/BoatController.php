@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Boat;
+use AppBundle\Service\MapManager;
 use AppBundle\Traits\BoatTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,7 +28,11 @@ class BoatController extends Controller
      *
      * @Route("/move/{direction}", name="moveDirection", requirements={"direction"="N|E|S|W"})
      */
-    public function moveDirectionAction(string $direction, SessionInterface $session)
+    public function moveDirectionAction(
+        string $direction,
+        MapManager $mapManager,
+        SessionInterface $session
+    )
     {
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
@@ -54,8 +59,16 @@ class BoatController extends Controller
                 $error = true;
                 $session->getFlashBag()->add(
                     'danger',
-                    'la direction «' . $direction . ' est invalide'
+                    'invalid "' . $direction . '" direction'
                 );
+        }
+
+        if (!$mapManager->tileExist($x,$y)) {
+            $error = true;
+            $session->getFlashBag()->add(
+                'warning',
+                'the place you tried to go is full of dragons! YOU CAN\'T!'
+            );
         }
 
         if (!$error) {
