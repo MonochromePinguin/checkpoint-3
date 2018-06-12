@@ -44,7 +44,8 @@
                     <ul>
                         {%  for key, label in movements %}
                             <li>
-                                <a href="/boat/move/{{ key }}" title="move the boat to the {{ label }}"
+                                <a href="{{ path('moveDirection', {'direction': key }) }}"
+                                   title="move the boat to the {{ label }}"
                                    class="btn btn-primary">
                                     {{ label }}
                                 </a>
