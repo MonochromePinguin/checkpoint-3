@@ -30,8 +30,7 @@ class BoatController extends Controller
      */
     public function moveDirectionAction(
         string $direction,
-        MapManager $mapManager,
-        SessionInterface $session
+        MapManager $mapManager
     ) {
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
@@ -56,7 +55,7 @@ class BoatController extends Controller
                 break;
             default:
                 $error = true;
-                $session->getFlashBag()->add(
+                $this->addFlash(
                     'danger',
                     'invalid "' . $direction . '" direction'
                 );
@@ -64,7 +63,7 @@ class BoatController extends Controller
 
         if (!$mapManager->tileExist($x, $y)) {
             $error = true;
-            $session->getFlashBag()->add(
+            $this->addFlash(
                 'warning',
                 'the place you tried to go is full of dragons! YOU CAN\'T!'
             );
