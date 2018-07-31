@@ -17,6 +17,8 @@ class MapController extends Controller
     use BoatTrait;
 
     /**
+     * start a new game: clear boat and treasure position
+     *
      * @Route("/start", name="start")
      */
     public function startAction(MapManager $mapManager)
