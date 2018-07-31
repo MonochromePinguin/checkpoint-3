@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Tile;
 
 /**
  * TileRepository
@@ -10,5 +11,26 @@ namespace AppBundle\Repository;
  */
 class TileRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * return a random tile of type "island"
+     * @return Tile
+     */
+    public function getRandomIsland(): ?Tile
+    {
+        $request = $this->createQueryBuilder('t' )
+            ->select('t');
+        $expr = $request->expr();
+
+        $request->where(
+                $expr->eq(
+                    't.type',
+                    $expr->literal('island')
+                )
+            )
+            ->orderBy('RAND()')
+            ->setMaxResults(1);
+
+        return $request->getQuery()->getSingleResult();
+    }
 
 }

@@ -76,7 +76,7 @@ class BoatController extends Controller
         }
 
         if ($mapManager->checkTreasure($boat)) {
-            $session->getFlashBag()->add(
+            $this->addFlash(
                 'success',
                 'You have found a treasure!'
             );

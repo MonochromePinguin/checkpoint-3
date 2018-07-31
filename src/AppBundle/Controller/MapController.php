@@ -31,7 +31,7 @@ class MapController extends Controller
         );
         $oldTreasureIsland->setHasTreasure(false);
 
-        $randomIsland = $mapManager->getRandomIsland();
+        $randomIsland = $tileRepository->getRandomIsland();
         $randomIsland->setHasTreasure(true);
 
         $boat = $this->getBoat();
