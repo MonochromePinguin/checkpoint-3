@@ -95,6 +95,22 @@ class Boat
     }
 
     /**
+     * Set coords
+     *
+     * @param integer $coordX
+     * @param integer $coordY
+     *
+     * @return Boat
+     */
+    public function setCoord(int $coordX, int $coordY)
+    {
+        $this->coordX = $coordX;
+        $this->coordY = $coordY;
+
+        return $this;
+    }
+
+    /**
      * Set coordX
      *
      * @param integer $coordX
