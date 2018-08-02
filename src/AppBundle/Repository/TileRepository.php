@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+
 use AppBundle\Entity\Tile;
 
 /**
@@ -17,20 +18,32 @@ class TileRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getRandomIsland(): ?Tile
     {
-        $request = $this->createQueryBuilder('t' )
+        $query = $this->createQueryBuilder('t')
             ->select('t');
-        $expr = $request->expr();
+        $expr = $query->expr();
 
-        $request->where(
-                $expr->eq(
-                    't.type',
-                    $expr->literal('island')
-                )
+        $query->where(
+            $expr->eq(
+                't.type',
+                $expr->literal('island')
             )
+        )
             ->orderBy('RAND()')
             ->setMaxResults(1);
 
-        return $request->getQuery()->getSingleResult();
+        return $query->getQuery()->getSingleResult();
     }
 
+    /**
+     * remove all treasure flag from tiles
+     */
+    public function clearTreasure(): void
+    {
+        $query = $this->createQueryBuilder('t')
+            ->update()
+            ->set('t.hasTreasure', 0)
+            ->where('t.hasTreasure = 1')
+            ->getQuery()
+            ->execute();
+    }
 }

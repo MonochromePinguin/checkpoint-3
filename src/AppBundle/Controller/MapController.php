@@ -26,17 +26,13 @@ class MapController extends Controller
         $em = $this->getDoctrine()->getManager();
         $tileRepository = $em->getRepository(Tile::class);
 
-        $oldTreasureIsland = $tileRepository->findOneBy(
-            ['hasTreasure' => true]
-        );
-        $oldTreasureIsland->setHasTreasure(false);
+        $tileRepository->clearTreasure();
 
         $randomIsland = $tileRepository->getRandomIsland();
         $randomIsland->setHasTreasure(true);
 
         $boat = $this->getBoat();
-        $boat->setCoordX(0);
-        $boat->setCoordY(0);
+        $boat->setCoord(0,0);
 
         $em->flush();
 

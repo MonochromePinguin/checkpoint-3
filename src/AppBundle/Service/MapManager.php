@@ -25,10 +25,10 @@ class MapManager
         $boatX = $boat->getCoordX();
         $boatY = $boat->getCoordY();
 
-        $boatTile = $this->tileRepository->findOneBy(
-            [ 'coordX' => $boatX, 'coordY' => $boatY ]
+        $boatTileWithTreasure = $this->tileRepository->findOneBy(
+            [ 'coordX' => $boatX, 'coordY' => $boatY, 'hasTreasure' => true ]
         );
 
-        return ( ($boatTile != null) && ($boatTile->getHasTreasure() === true));
+        return ( null != $boatTileWithTreasure );
     }
 }

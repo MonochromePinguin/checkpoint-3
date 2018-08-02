@@ -36,13 +36,13 @@ class AppFixtures extends Fixture
                 $tile->setType($type);
                 $tile->setCoordX($x);
                 $tile->setCoordY($y);
+                $tile->setHasTreasure(false);
                 $manager->persist($tile);
             }
         }
 
         $boat = new Boat();
-        $boat->setCoordX(0);
-        $boat->setCoordY(0);
+        $boat->setCoord(0, 0);
         $boat->setName('Black Pearl');
         $manager->persist($boat);
 
