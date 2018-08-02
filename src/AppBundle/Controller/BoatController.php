@@ -22,9 +22,8 @@ class BoatController extends Controller
 
     /**
      * @param string $direction must be one of 'N', 'E', 'S', 'W' for the 4 cardinal direction
-     *               **THIS IS BAD PRACTICE (MAGICAL STRINGS?), BUT IT IS ASKED BY THE INSTRUCTIONS.**
-     *               @TODO: USE Boat::DIRECTION_LIST INSTEAD
-     * @param SessionInterface $session
+ *               **ISN'T IT BAD PRACTICE (MAGICAL STRINGS?)? BUT IT IS ASKED BY THE INSTRUCTIONS.**
+ *               @TODO: IS THERE A WAY TO USE Boat::DIRECTION_LIST INTO ANNOTATIONS INSTEAD?
      *
      * @Route("/move/{direction}", name="moveDirection", requirements={"direction"="N|E|S|W"})
      */
@@ -35,33 +34,29 @@ class BoatController extends Controller
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
 
-        $x = $boat->getCoordX();
-        $y = $boat->getCoordY();
+        $boatCoord = $boat->getCoord();
 
         $error = false;
 
-        switch ($direction) {
-            case 'N':
-                $y--;
-                break;
-            case 'E':
-                $x++;
-                break;
-            case 'S':
-                $y++;
-                break;
-            case 'W':
-                $x--;
-                break;
-            default:
-                $error = true;
-                $this->addFlash(
-                    'danger',
-                    'invalid "' . $direction . '" direction'
-                );
+        #The direction and the associated instructions to move the boat
+        # are stored in an array, so the controller is now independant of the
+        # available movements ...
+        # **BUT THE ANNOTATIONS ARE STILL HARDCODED HERE**
+        //TODO: this work, but it is surely less performant than a good
+        // old plain case{} block!!!-
+        if (array_key_exists($direction, Boat::DIRECTION_LIST)) {
+            #The future boat coordinates are updated there
+            (Boat::DIRECTION_FUNCTIONS[$direction])($boatCoord);
+        } else {
+            $error = true;
+            $this->addFlash(
+                'danger',
+                'invalid "' . $direction . '" direction'
+            );
         }
 
-        if (!$mapManager->tileExist($x, $y)) {
+        # $boatCoord is spread into two parameters $x and $y...
+        if (!$mapManager->tileExist(...$boatCoord)) {
             $error = true;
             $this->addFlash(
                 'warning',
@@ -70,7 +65,7 @@ class BoatController extends Controller
         }
 
         if (!$error) {
-            $boat->setCoord($x, $y);
+            $boat->setCoord(...$boatCoord);
             $em->flush();
         }
 
