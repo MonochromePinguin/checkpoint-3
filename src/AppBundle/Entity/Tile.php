@@ -85,8 +85,16 @@ class Tile
     public function setType($type)
     {
         $this->type = $type;
-
         return $this;
+    }
+
+    /**
+     * return the X/Y coordinates as an indexed array
+     * @return array of two int
+     */
+    public function getCoords(): array
+    {
+        return [$this->coordX, $this->coordY];
     }
 
     /**

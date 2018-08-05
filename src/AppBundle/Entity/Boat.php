@@ -122,14 +122,14 @@ class Boat
     }
 
     /**
-     * Set coords
+     * Set coordinates
      *
      * @param integer $coordX
      * @param integer $coordY
      *
      * @return Boat
      */
-    public function setCoord(int $coordX, int $coordY)
+    public function setCoords(int $coordX, int $coordY)
     {
         $this->coordX = $coordX;
         $this->coordY = $coordY;
@@ -138,11 +138,11 @@ class Boat
     }
 
     /**
-     * get coords
+     * get coordinates
      *
-     * @return array
+     * @return array of two int
      */
-    public function getCoord(): array
+    public function getCoords(): array
     {
         return [$this->coordX, $this->coordY];
     }

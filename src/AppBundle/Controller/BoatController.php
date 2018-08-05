@@ -34,7 +34,7 @@ class BoatController extends Controller
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
 
-        $boatCoord = $boat->getCoord();
+        $boatCoord = $boat->getCoords();
 
         $error = false;
 
@@ -43,7 +43,7 @@ class BoatController extends Controller
         # available movements ...
         # **BUT THE ANNOTATIONS ARE STILL HARDCODED HERE**
         //TODO: this work, but it is surely less performant than a good
-        // old plain case{} block!!!-
+        // old plain case{} block!!! → just revert to prev' commit...
         if (array_key_exists($direction, Boat::DIRECTION_LIST)) {
             #The future boat coordinates are updated there
             (Boat::DIRECTION_FUNCTIONS[$direction])($boatCoord);
@@ -65,7 +65,7 @@ class BoatController extends Controller
         }
 
         if (!$error) {
-            $boat->setCoord(...$boatCoord);
+            $boat->setCoords(...$boatCoord);
             $em->flush();
         }
 
@@ -88,7 +88,7 @@ class BoatController extends Controller
         $em = $this->getDoctrine()->getManager();
         $boat = $this->getBoat();
 
-        $boat->setCoord($x, $y);
+        $boat->setCoords($x, $y);
 
         $em->flush();
 

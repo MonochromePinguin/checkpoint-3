@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
         }
 
         $boat = new Boat();
-        $boat->setCoord(0, 0);
+        $boat->setCoords(0, 0);
         $boat->setName('Black Pearl');
         $manager->persist($boat);
 

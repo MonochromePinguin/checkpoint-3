@@ -31,8 +31,12 @@ class MapController extends Controller
         $randomIsland = $tileRepository->getRandomIsland();
         $randomIsland->setHasTreasure(true);
 
+        # store the coordinates in cache to avoid DB access (see implementation)
+        # to be future-proof, we use an array of coordinate pairs
+        $mapManager->setTreasureCoords([$randomIsland->getCoords()]);
+
         $boat = $this->getBoat();
-        $boat->setCoord(0,0);
+        $boat->setCoords(0, 0);
 
         $em->flush();
 
@@ -48,12 +52,14 @@ class MapController extends Controller
         $tiles = $em->getRepository(Tile::class)->findAll();
 
         foreach ($tiles as $tile) {
-            $map[$tile->getCoordX()][$tile->getCoordY()] = $tile;
+            [$xTile, $yTile] = $tile->getCoords();
+            $map[$xTile][$yTile] = $tile;
         }
 
         $boat = $this->getBoat();
+        [$xBoat, $yBoat] = $boat->getCoords();
 
-        $boatTile = $map[$boat->getCoordX()][$boat->getCoordY()];
+        $boatTile = $map[$xBoat][$yBoat];
 
         return $this->render('map/index.html.twig', [
             'map'  => $map ?? [],
